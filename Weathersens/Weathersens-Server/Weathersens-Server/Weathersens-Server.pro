@@ -17,5 +17,5 @@ SOURCES += \
     Weathersens.cpp \
     main.cpp
 
-LIBS += -L/usr/lib/python3.8/config -lpython3.8
-INCLUDEPATH += /usr/include/python3.8
+LIBS += -L/usr/lib/python3.9/config -lpython3.9
+INCLUDEPATH += /usr/include/python3.9
