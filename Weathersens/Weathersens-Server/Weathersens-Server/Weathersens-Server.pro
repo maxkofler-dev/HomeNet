@@ -5,7 +5,8 @@ HEADERS += \
     HNPython.h \
     StartupMsg.h \
     WSValueserver.h \
-    Weathersens.h
+    Weathersens.h \
+    hnnetworking.h
 
 SOURCES += \
     ConfigParser.cpp \
@@ -15,6 +16,7 @@ SOURCES += \
     StartupMsg.cpp \
     WSValueserver.cpp \
     Weathersens.cpp \
+    hnnetworking.cpp \
     main.cpp
 
 LIBS += -L/usr/lib/python3.9/config -lpython3.9
