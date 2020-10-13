@@ -21,6 +21,7 @@ public:
     void stop();
 
     void outOverview();
+    WSValueserver* getVSRef(){return vserver_;}
 private:
     ConfigParser *configParser_;
     ExceptionClass *exception_;

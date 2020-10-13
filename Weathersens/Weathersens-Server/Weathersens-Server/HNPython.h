@@ -12,8 +12,8 @@
 using namespace std;
 
 struct value{
-    string type;
-    string value;
+    std::string type;
+    std::string value;
 };
 
 class HNPython

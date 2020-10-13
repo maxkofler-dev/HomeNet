@@ -10,6 +10,19 @@
 
 using namespace std;
 
+struct valueInstance{
+    std::string driverName;
+    int driverId;
+    std::string valueName;
+    std::string valueUnit;
+    std::string valueType;
+    int valueId;
+
+
+    std::string value;
+    std::string valueDataType;
+};
+
 class WSValueserver
 {
 public:
@@ -22,6 +35,10 @@ public:
 
     string getValue(int);
     string getType(int);
+
+    int getValueCount(){return driversInstance_.tValuesCount;}
+
+    struct valueInstance getValueInstance(int);
 
 private:
     bool active_= false;

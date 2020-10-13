@@ -51,3 +51,16 @@ string WSValueserver::getValue(int id){
 string WSValueserver::getType(int id){
     return values_[id].type;
 }
+
+struct valueInstance WSValueserver::getValueInstance(int id){
+    struct valueInstance vI;
+    vI.valueDataType = values_[id].type;
+    vI.value = values_[id].value;
+    vI.driverId = driversInstance_.vDriverReferences[id];
+    vI.valueId = driversInstance_.vReferences[id];
+    vI.driverName = driversInstance_.driverInstances[vI.driverId].dName;
+    vI.valueName = driversInstance_.driverInstances[vI.driverId].vNames[vI.valueId];
+    vI.valueUnit = driversInstance_.driverInstances[vI.driverId].vUnits[vI.valueId];
+    vI.valueType = driversInstance_.driverInstances[vI.driverId].vTypes[vI.valueId];
+    return vI;
+}
