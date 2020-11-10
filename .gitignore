@@ -2,3 +2,4 @@
 build*
 *.pro.user*
 *.qmake.*
+*pro.user*

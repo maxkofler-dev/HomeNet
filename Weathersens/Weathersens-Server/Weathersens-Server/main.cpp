@@ -10,6 +10,7 @@
 
 void runNet(HNNetworking* hnw){
     hnw->runNetwork();
+    std::cout << "Networking ended!" << std::endl;
 }
 
 int main(int argc, char** argv)

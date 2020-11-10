@@ -7,8 +7,9 @@ HNNetworking::HNNetworking(WSValueserver* ref)
 
 void HNNetworking::runNetwork(){
     using namespace std;
+    cout << "Starting network!" << endl;
     int sock = socket(AF_INET, SOCK_STREAM, 0);
-    int port = 8090;
+    int port = 8080;
     if (sock < 0)
     {
         cout << "Erronr in creating socket" << endl;
