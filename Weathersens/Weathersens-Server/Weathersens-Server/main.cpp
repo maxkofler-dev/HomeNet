@@ -1,10 +1,16 @@
 
 #include <iostream>
 #include <unistd.h>
+#include <thread>
 
 #include "ConfigParser.h"
 #include "ExceptionClass.h"
 #include "Weathersens.h"
+#include "HNNetworking.h"
+
+void runNet(HNNetworking* hnw){
+    hnw->runNetwork();
+}
 
 int main(int argc, char** argv)
 {
@@ -17,12 +23,15 @@ int main(int argc, char** argv)
         int timeSleep = stoi(cp.getConfig("timesleep", true, false));
         Weathersens ws(&cp, &ec);
         ws.init();
+        HNNetworking hnw(ws.getVSRef());
+        std::thread netThread(runNet, &hnw);
         while (true)
         {
             ws.refreshValues();
             ws.outOverview();
             usleep(1000000 * timeSleep);
         }
+        netThread.join();
     }catch(ExceptionClass* e)
     {
         e->printExceptionText();
