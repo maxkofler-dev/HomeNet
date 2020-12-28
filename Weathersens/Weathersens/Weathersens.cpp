@@ -1,8 +1,9 @@
 #include "Weathersens.h"
 
-Weathersens::Weathersens(ConfigParser* cp, ExceptionClass* exc){
+Weathersens::Weathersens(ConfigParser* cp, ExceptionClass* exc, Log* log){
     this->configParser_ = cp;
     this->exception_ = exc;
+    this->log = log;
 }
 
 Weathersens::~Weathersens(){
@@ -25,7 +26,7 @@ void Weathersens::init(){
     driverListPath_ = configParser_->getConfig("driverListPath", true, false);
 
     //Parse the driver list and get the driver information
-    driverListParser_ = new DriverListParser(driverListPath_, exception_);
+    driverListParser_ = new DriverListParser(driverListPath_, exception_, log);
     driverListParser_->parseList();
 
     driverInstances_ = driverListParser_->getInstances();
@@ -35,7 +36,7 @@ void Weathersens::init(){
         driverListParser_->coutDriver(driverInstances_.driverInstances[i]);
     }
 
-    vserver_ = new WSValueserver(configParser_, driverInstances_);
+    vserver_ = new WSValueserver(configParser_, driverInstances_, log);
 
     vserver_->init();
     active_ = true;

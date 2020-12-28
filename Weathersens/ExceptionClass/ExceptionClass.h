@@ -1,5 +1,3 @@
-#pragma once
-
 #ifndef EXCEPTIONCLASS
 #define EXCEPTIONCLASS
 

@@ -4,6 +4,7 @@
 #include <string>
 #include <iostream>
 
+#include "../../log/log.h"
 #include "../ConfigParser/ConfigParser.h"
 #include "../DriverListParser/DriverListParser.h"
 #include "../WSValueserver/WSValueserver.h"
@@ -14,7 +15,7 @@ using namespace std;
 class Weathersens
 {
 public:
-    Weathersens(ConfigParser*, ExceptionClass*);
+    Weathersens(ConfigParser*, ExceptionClass*, Log*);
     ~Weathersens();
     void init();
     void refreshValues();
@@ -23,6 +24,7 @@ public:
     void outOverview();
     WSValueserver* getVSRef(){return vserver_;}
 private:
+    Log* log;
     ConfigParser *configParser_;
     ExceptionClass *exception_;
     DriverListParser *driverListParser_;

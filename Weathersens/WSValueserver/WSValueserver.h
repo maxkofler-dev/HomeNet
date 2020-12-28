@@ -2,8 +2,8 @@
 #define WSVALUESERVER_H
 
 #include <string>
-#include <iostream>
 
+#include "../../log/log.h"
 #include "../ConfigParser/ConfigParser.h"
 #include "../DriverListParser/DriverListParser.h"
 #include "../HNPython/HNPython.h"
@@ -26,7 +26,7 @@ struct valueInstance{
 class WSValueserver
 {
 public:
-    WSValueserver(ConfigParser*, drivers);
+    WSValueserver(ConfigParser*, drivers, Log*);
     ~WSValueserver();
 
     void init();
@@ -41,6 +41,7 @@ public:
     struct valueInstance getValueInstance(int);
 
 private:
+    Log* log;
     bool active_= false;
     ConfigParser* config_;
     drivers driversInstance_;

@@ -5,8 +5,8 @@
 
 #include <string>
 #include <fstream>
-#include <iostream>
 #include "../ExceptionClass/ExceptionClass.h"
+#include "../../log/log.h"
 
 using namespace std;
 
@@ -33,12 +33,13 @@ public:
 class ConfigParser
 {
 public:
-    ConfigParser(ExceptionClass*);
+    ConfigParser(ExceptionClass*, Log*);
 	void parseConfig(string);
 	string getConfig(string, bool, bool);
 
     bool configParsed(){return configParsed_;}
 private:
+	Log* log;
 	string* configNames;
 	string* configs;
 

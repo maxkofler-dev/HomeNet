@@ -1,12 +1,11 @@
-#pragma once
 #ifndef DRIVERLISTPARSER
 #define DRIVERLISTPARSER
 
 #include <string>
 #include <fstream>
-#include <iostream>
 #include <vector>
 
+#include "../../log/log.h"
 #include "../StartupMsg/StartupMsg.h"
 #include "../ExceptionClass/ExceptionClass.h"
 using namespace std;
@@ -45,13 +44,15 @@ struct drivers
 class DriverListParser
 {
 public:
-    DriverListParser(string, ExceptionClass*);
+    DriverListParser(string, ExceptionClass*, Log*);
 
 	void parseList();
     void coutDriver(struct driver);
     struct drivers getInstances(){return driverInstances;}
 
 private:
+    Log* log;
+
     ifstream cFile;
 
     struct driver loadDriver();
