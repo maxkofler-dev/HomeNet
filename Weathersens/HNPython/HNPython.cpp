@@ -1,9 +1,10 @@
 #include "HNPython.h"
 
-HNPython::HNPython(ConfigParser* cfg, struct drivers dInst)
+HNPython::HNPython(ConfigParser* cfg, struct drivers dInst, Log* log)
 {
-    config_ = cfg;
-    driversInstance_ = dInst;
+    this->config_ = cfg;
+    this->driversInstance_ = dInst;
+    this->log = log;
 }
 
 void HNPython::initPython(){
@@ -28,7 +29,7 @@ void HNPython::importDrivers(){
     {
         command = "import " + driversInstance_.driverInstances[i].dName + ".main as driver" + to_string(i);
         PyRun_SimpleString(command.c_str());
-        cout << "Imported a driver with command: " << command << endl;
+        log->log("HNPython::importDrivers()", "Imported a driver with command: " + command, Log::I);
     }
 }
 

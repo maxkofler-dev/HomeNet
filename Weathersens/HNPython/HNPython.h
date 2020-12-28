@@ -3,10 +3,10 @@
 
 #include <Python.h>
 #include <string>
-#include <iostream>
 #include <fstream>
 #include <ctime>
 
+#include "../../log/log.h"
 #include "../ConfigParser/ConfigParser.h"
 #include "../DriverListParser/DriverListParser.h"
 
@@ -18,7 +18,7 @@ struct value{
 class HNPython
 {
 public:
-    HNPython(ConfigParser*, struct drivers);
+    HNPython(ConfigParser*, struct drivers, Log*);
 
     void initPython();
     void finishPython();
@@ -35,6 +35,8 @@ public:
 
     void execTrigger(int);
 private:
+    Log* log;
+
     struct value getValueReturn(int);
 
     ConfigParser* config_;

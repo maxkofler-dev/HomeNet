@@ -11,20 +11,21 @@
 
 #include <fstream>
 #include <string>
-#include <iostream>
 
+#include "../../log/log.h"
 #include "../WSValueserver/WSValueserver.h"
 #include "../ConfigParser/ConfigParser.h"
 
 class HNNetworking
 {
 public:
-    HNNetworking(WSValueserver*, ConfigParser*);
+    HNNetworking(WSValueserver*, ConfigParser*, Log*);
     void runNetwork();
     void sendVSPack(int, std::string);
     string packValue(int);
 
 private:
+    Log* log;
     WSValueserver* vSRef_;
     ConfigParser* cp_;
 

@@ -64,7 +64,7 @@ void ConfigParser::parseConfig(string path)
 
 		if (buffer.find('#') < buffer.length())	//if a "#" arrives in a line ignore it
 		{
-			cout << "Ignoring line \"" << buffer << "\" because of found '#'!" << endl;
+			log->log("ConfigParser::parseConfig()", "Ignoring line: " + buffer, Log::D);
 		}
 
 		else
@@ -84,9 +84,6 @@ void ConfigParser::parseConfig(string path)
 			{
 				configs[configId] += buffer[i];
 			}
-
-			cout << "Config name[" << configId << "] = \"" << configNames[configId] << "\"" << endl;
-			cout << "Config[" << configId << "] = \"" << configs[configId] << "\"" << endl;
 
 			configId++;
 		}
@@ -135,8 +132,9 @@ string ConfigParser::getConfig(string configName, bool isCritical, bool throwNon
 	}
 }
 
-ConfigParser::ConfigParser(ExceptionClass* exc)
+ConfigParser::ConfigParser(ExceptionClass* exc, Log* log)
 {
-    exception = exc;
-    configParsed_ = false;
+    this->exception = exc;
+    this->configParsed_ = false;
+	this->log = log;
 }

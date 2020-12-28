@@ -1,9 +1,10 @@
 #include "DriverListParser.h"
 
-DriverListParser::DriverListParser(string path, ExceptionClass* exc)
+DriverListParser::DriverListParser(string path, ExceptionClass* exc, Log* log)
 {
 	this->path = path;
     this->exClass = exc;
+    this->log = log;
 }
 
 void DriverListParser::parseList()
@@ -75,7 +76,8 @@ struct driver DriverListParser::loadDriver(){
     {
         return driverInstance;
     }
-    cout << "New line: " << *buffer << endl;
+
+    log->log("DriverListParser::loadDriver()", "New line: " + *buffer, Log::D);
 
     bool openSignOutOfIndex = false;
     bool closeSignOutOfIndex = false;
@@ -155,7 +157,7 @@ struct driver DriverListParser::loadDriver(){
 
         while (!driverEnd){
             getline(cFile, nBuffer);
-            cout << "New memberline: " << nBuffer << endl;
+            log->log("DriverListParser::loadDriver()", "New member line: " + nBuffer, Log::D);
             memberFound = parseDriverMember(nBuffer, &driverInstance);
             driverEnd = !memberFound;
         }
@@ -210,7 +212,6 @@ bool DriverListParser::parseDriverMember(string buffer, struct driver* driverIns
 
     if (!args[0].compare("value")){
         //If the member is a value, store its information
-        cout << "value" << endl;
         driverInstance->vIDs[vIndex] = stoi(args[1]);
         driverInstance->gvIDs[vIndex] = gvIndex;
         driverInstance->vTypes[vIndex] = args[2];
@@ -221,7 +222,6 @@ bool DriverListParser::parseDriverMember(string buffer, struct driver* driverIns
         memberFound = true;
     }else if (!args[0].compare("trigger")){
         //Same for triggers
-        cout << "trigger" << endl;
         driverInstance->tIDs[tIndex] = stoi(args[1]);
         driverInstance->gtIDs[tIndex] = gtIndex;
         driverInstance->tTypes[tIndex] = args[2];
@@ -231,9 +231,7 @@ bool DriverListParser::parseDriverMember(string buffer, struct driver* driverIns
         tIndex++;
         memberFound = true;
     }else if (args[0].compare("/value")){
-        cout << "End of driver block!" << endl;
     }else{
-        cout << "unknown" << endl;
     }
 
     return memberFound;
@@ -263,6 +261,6 @@ void DriverListParser::coutDriver(struct driver instance){
         out += "Triggertype: " + instance.tTypes[i] + "\n-\n";
     }
 
-    cout << out;
+    log->log("DriverListParser::coutDriver()", out, Log::I);
 
 }

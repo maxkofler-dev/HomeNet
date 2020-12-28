@@ -1,19 +1,21 @@
 #include "HNNetworking.h"
 
-HNNetworking::HNNetworking(WSValueserver* ref, ConfigParser* cp)
+HNNetworking::HNNetworking(WSValueserver* ref, ConfigParser* cp, Log* log)
 {
-    vSRef_ = ref;
-    cp_ = cp;
+    this->vSRef_ = ref;
+    this->cp_ = cp;
+    this->log = log;
 }
 
 void HNNetworking::runNetwork(){
     using namespace std;
-    cout << "Starting network!" << endl;
+    log->log("HNNetworking::runNetwork()", "Starting network!", Log::I);
     int sock = socket(AF_INET, SOCK_STREAM, 0);
     int port = 8090;
     if (sock < 0)
     {
-        cout << "Erronr in creating socket" << endl;
+        log->log("HNNetworking::runNetwork()", "Error in creating socket!", Log::E);
+        return;
     }
     struct sockaddr_in server;
     int y = 1;
@@ -29,12 +31,14 @@ void HNNetworking::runNetwork(){
 
     if (bind(sock, (struct sockaddr*) & server, sizeof(server)) < 0)
     {
-        cout << "Error in binding server!" << endl;
+        log->log("HNNetworking::runNetwork()", "Error in binding server!", Log::E);
+        return;
     }
 
     if (listen(sock, 5) == -1)
     {
-        cout << "Error in listening" << endl;
+        log->log("HNNetworking::runNetwork()", "Error in listening on socket!", Log::E);
+        return;
     }
 
     struct sockaddr_in client;
@@ -48,20 +52,19 @@ void HNNetworking::runNetwork(){
         sock2 = accept(sock, (struct sockaddr*) & client, &len);
         if (sock2 < 0)
         {
-            cout << "Error in connecting to client!" << endl;
+            log->log("HNNetworking::runNetwork()", "Error in connecting to client!", Log::E);
         }
         else
         {
             //isConnected = true;
             std::string msg;
             int lenmsg = recv(sock2, buffer, 1024, 0);
-            cout << "Message incoming in loop entry (len: " << lenmsg << "): ";
+            
             for (int i = 0; i < lenmsg; i++)
             {
-                cout << buffer[i];
                 msg += buffer[i];
             }
-            cout << endl;
+            log->log("HNNetworking::runNetwork()", "Message incoming: " + msg, Log::I);
             sendVSPack(sock2, msg);
             //isConnected = false;
             close(sock2);
@@ -72,21 +75,19 @@ void HNNetworking::runNetwork(){
 void HNNetworking::sendVSPack(int sockClient, std::string msg){
     cout << msg << endl;
     if(msg.find("@va") <= msg.length()){
-        cout << "Syncing whole dataset!" << endl;
+        log->log("HNNetworking::runNetwork()", "Synching current live data with device!", Log::I);
         std::string buf;
         for (int i = 0; i < vSRef_->getValueCount(); i++){
             buf += this->packValue(i) + "\n";
         }
         send(sockClient, buf.c_str(), buf.length(), 0);
     }else if (msg.find("@vh") <= msg.length()){
-        cout << "Called history";
-        cout.flush();
         string buf;
         for (int i = msg.find("@vh") + 3; i < (int)msg.length(); i++){
             buf += msg[i];
         }
         int id = stoi(buf);
-        cout << " - ID of value: " << id << endl;
+        log->log("HNNetworking::runNetwork()", "Called history of value " + to_string(id), Log::I);
         string wp = cp_->getConfig("workdir", true, false);
         ifstream histFile;
         histFile.open(wp + "/valueHistory/" + to_string(id), ios::in);

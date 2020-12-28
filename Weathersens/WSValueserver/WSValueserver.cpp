@@ -1,16 +1,17 @@
 #include "WSValueserver.h"
 
-WSValueserver::WSValueserver(ConfigParser* config, drivers dInstance)
+WSValueserver::WSValueserver(ConfigParser* config, drivers dInstance, Log* log)
 {
     this->config_ = config;
     this->driversInstance_ = dInstance;
-    py = new HNPython(config, dInstance);
+    this->log = log;
+    py = new HNPython(config, dInstance, this->log);
 }
 
 WSValueserver::~WSValueserver(){
     if(active_)
     {
-        cout << "Warning: WSValueserver::end() not called, please implement!" << endl;
+        log->logprg("WSValueserver::~WSValueserver()", "WSValueServer::end() not called, please implement!!!", Log::W);
         py->stopDrivers();
         py->finishPython();
         delete[] values_;
