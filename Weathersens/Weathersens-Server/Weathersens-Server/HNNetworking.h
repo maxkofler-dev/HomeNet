@@ -14,17 +14,19 @@
 #include <iostream>
 
 #include "WSValueserver.h"
+#include "ConfigParser.h"
 
 class HNNetworking
 {
 public:
-    HNNetworking(WSValueserver*);
+    HNNetworking(WSValueserver*, ConfigParser*);
     void runNetwork();
     void sendVSPack(int, std::string);
     string packValue(int);
 
 private:
     WSValueserver* vSRef_;
+    ConfigParser* cp_;
 
 };
 

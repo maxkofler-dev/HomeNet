@@ -102,6 +102,13 @@ struct value HNPython::getValueReturn(string wp, int ID){
         value += buffer[i];
     }
 
+    time_t now = time(0);
+
+    fstream history;
+    history.open(wp + "/valueHistory/" + to_string(ID), ios::app);
+    history << now << ";" << value << endl;
+    history.close();
+
     vReturn.type = type;
     vReturn.value = value;
 

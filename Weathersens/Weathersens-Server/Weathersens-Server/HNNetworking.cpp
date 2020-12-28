@@ -1,15 +1,16 @@
 #include "HNNetworking.h"
 
-HNNetworking::HNNetworking(WSValueserver* ref)
+HNNetworking::HNNetworking(WSValueserver* ref, ConfigParser* cp)
 {
     vSRef_ = ref;
+    cp_ = cp;
 }
 
 void HNNetworking::runNetwork(){
     using namespace std;
     cout << "Starting network!" << endl;
     int sock = socket(AF_INET, SOCK_STREAM, 0);
-    int port = 8080;
+    int port = 8090;
     if (sock < 0)
     {
         cout << "Erronr in creating socket" << endl;
@@ -42,7 +43,7 @@ void HNNetworking::runNetwork(){
     char buffer[1024] = { 0 };
 
     while (true){
-        bool isConnected = false;
+        //bool isConnected = false;
         len = sizeof(client);
         sock2 = accept(sock, (struct sockaddr*) & client, &len);
         if (sock2 < 0)
@@ -51,7 +52,7 @@ void HNNetworking::runNetwork(){
         }
         else
         {
-            isConnected = true;
+            //isConnected = true;
             std::string msg;
             int lenmsg = recv(sock2, buffer, 1024, 0);
             cout << "Message incoming in loop entry (len: " << lenmsg << "): ";
@@ -62,13 +63,14 @@ void HNNetworking::runNetwork(){
             }
             cout << endl;
             sendVSPack(sock2, msg);
-            isConnected = false;
+            //isConnected = false;
             close(sock2);
         }
     }
 }
 
 void HNNetworking::sendVSPack(int sockClient, std::string msg){
+    cout << msg << endl;
     if(msg.find("@va") <= msg.length()){
         cout << "Syncing whole dataset!" << endl;
         std::string buf;
@@ -76,6 +78,27 @@ void HNNetworking::sendVSPack(int sockClient, std::string msg){
             buf += this->packValue(i) + "\n";
         }
         send(sockClient, buf.c_str(), buf.length(), 0);
+    }else if (msg.find("@vh") <= msg.length()){
+        cout << "Called history";
+        cout.flush();
+        string buf;
+        for (int i = msg.find("@vh") + 3; i < (int)msg.length(); i++){
+            buf += msg[i];
+        }
+        int id = stoi(buf);
+        cout << " - ID of value: " << id << endl;
+        string wp = cp_->getConfig("workdir", true, false);
+        ifstream histFile;
+        histFile.open(wp + "/valueHistory/" + to_string(id), ios::in);
+        string out;
+        while(histFile.good() && !histFile.eof()){
+            getline(histFile, buf);
+            out += buf + "\n";
+        }
+
+        histFile.close();
+
+        send (sockClient, out.c_str(), out.length(), 0);
     }
 
 }
