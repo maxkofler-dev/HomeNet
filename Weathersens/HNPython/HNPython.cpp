@@ -11,6 +11,7 @@ void HNPython::initPython(){
     PyRun_SimpleString("import sys");
     driverPath_ = config_->getConfig("driverpath", true, false);
     workDir_ = config_->getConfig("workdir", true, false);
+    historyDir_ = config_->getConfig("historydir", true, false);
     string exec = "sys.path.append(\"" + driverPath_ + "\")";
     PyRun_SimpleString(exec.c_str());
 }
@@ -73,17 +74,17 @@ void HNPython::callValues(){
             command += ", " + to_string(i);
             command += ", \"" + workDir_ + "\")";
             PyRun_SimpleString(command.c_str());
-            valuesBuffer_[gID] = getValueReturn(workDir_, gID);
+            valuesBuffer_[gID] = getValueReturn(gID);
             gID++;
         }
     }
 }
 
-struct value HNPython::getValueReturn(string wp, int ID){
+struct value HNPython::getValueReturn(int ID){
     struct value vReturn;
     ifstream file;
     string buffer;
-    string path = (wp + "/valueReturn/" + to_string(ID));
+    string path = (this->workDir_ + "/valueReturn/" + to_string(ID));
     file.open(path.c_str(), ios::in);
     getline(file, buffer);
     int pos [4] = {0};
@@ -105,7 +106,7 @@ struct value HNPython::getValueReturn(string wp, int ID){
     time_t now = time(0);
 
     fstream history;
-    history.open(wp + "/valueHistory/" + to_string(ID), ios::app);
+    history.open(this->historyDir_ + "/valueHistory/" + to_string(ID), ios::app);
     history << now << ";" << value << endl;
     history.close();
 
