@@ -13,8 +13,8 @@
 #include <string>
 #include <iostream>
 
-#include "WSValueserver.h"
-#include "ConfigParser.h"
+#include "../WSValueserver/WSValueserver.h"
+#include "../ConfigParser/ConfigParser.h"
 
 class HNNetworking
 {
@@ -29,5 +29,7 @@ private:
     ConfigParser* cp_;
 
 };
+
+#include "HNNetworking.cpp"
 
 #endif // HNNETWORKING_H

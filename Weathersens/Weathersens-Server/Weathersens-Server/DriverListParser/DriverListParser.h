@@ -7,8 +7,8 @@
 #include <iostream>
 #include <vector>
 
-#include "StartupMsg.h"
-#include "ExceptionClass.h"
+#include "../StartupMsg/StartupMsg.h"
+#include "../ExceptionClass/ExceptionClass.h"
 using namespace std;
 
 struct driver
@@ -73,5 +73,7 @@ private:
 
     struct drivers driverInstances;
 };
+
+#include "DriverListParser.cpp"
 
 #endif

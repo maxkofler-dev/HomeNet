@@ -6,7 +6,7 @@
 #include <string>
 #include <fstream>
 #include <iostream>
-#include "ExceptionClass.h"
+#include "../ExceptionClass/ExceptionClass.h"
 
 using namespace std;
 
@@ -48,5 +48,7 @@ private:
 
     ExceptionClass *exception;
 };
+
+#include "ConfigParser.cpp"
 
 #endif // !CONFIGPARSER

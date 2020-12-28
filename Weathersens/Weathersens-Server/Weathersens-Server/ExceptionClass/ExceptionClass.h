@@ -6,7 +6,7 @@
 #include <string>
 #include <iostream>
 
-#include "StartupMsg.h"
+#include "../StartupMsg/StartupMsg.h"
 
 using namespace std;
 
@@ -26,5 +26,7 @@ private:
 	StartupMsg* msg;
 	bool isDetail;
 };
+
+#include "ExceptionClass.cpp"
 
 #endif

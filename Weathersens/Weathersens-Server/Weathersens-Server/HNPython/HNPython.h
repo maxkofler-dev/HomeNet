@@ -7,8 +7,8 @@
 #include <fstream>
 #include <ctime>
 
-#include "ConfigParser.h"
-#include "DriverListParser.h"
+#include "../ConfigParser/ConfigParser.h"
+#include "../DriverListParser/DriverListParser.h"
 
 using namespace std;
 
@@ -47,5 +47,7 @@ private:
 
     struct value *valuesBuffer_;
 };
+
+#include "HNPython.cpp"
 
 #endif // WSPYTHON_H

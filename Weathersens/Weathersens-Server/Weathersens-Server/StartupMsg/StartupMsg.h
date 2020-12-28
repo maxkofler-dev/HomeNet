@@ -20,4 +20,6 @@ private:
 	string path = "startupWarnings.wswarnings";
 };
 
+#include "StartupMsg.cpp"
+
 #endif // !STARTUPWARNINGS

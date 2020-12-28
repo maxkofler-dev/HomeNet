@@ -4,9 +4,9 @@
 #include <string>
 #include <iostream>
 
-#include "ConfigParser.h"
-#include "DriverListParser.h"
-#include "WSValueserver.h"
+#include "../ConfigParser/ConfigParser.h"
+#include "../DriverListParser/DriverListParser.h"
+#include "../WSValueserver/WSValueserver.h"
 
 
 using namespace std;
@@ -35,5 +35,7 @@ private:
 
     WSValueserver *vserver_;
 };
+
+#include "Weathersens.cpp"
 
 #endif // WEATHERSENS_H

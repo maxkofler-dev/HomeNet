@@ -4,9 +4,9 @@
 #include <string>
 #include <iostream>
 
-#include "ConfigParser.h"
-#include "DriverListParser.h"
-#include "HNPython.h"
+#include "../ConfigParser/ConfigParser.h"
+#include "../DriverListParser/DriverListParser.h"
+#include "../HNPython/HNPython.h"
 
 using namespace std;
 
@@ -48,5 +48,7 @@ private:
     HNPython *py;
     struct value *values_;
 };
+
+#include "WSValueserver.cpp"
 
 #endif // WSVALUESERVER_H
