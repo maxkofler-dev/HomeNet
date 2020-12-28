@@ -3,10 +3,10 @@
 #include <unistd.h>
 #include <thread>
 
-#include "ConfigParser/ConfigParser.h"
-#include "ExceptionClass/ExceptionClass.h"
-#include "Weathersens/Weathersens.h"
-#include "HNNetworking/HNNetworking.h"
+#include "Weathersens/ConfigParser/ConfigParser.h"
+#include "Weathersens/ExceptionClass/ExceptionClass.h"
+#include "Weathersens/Weathersens/Weathersens.h"
+#include "Weathersens/HNNetworking/HNNetworking.h"
 
 void runNet(HNNetworking* hnw){
     hnw->runNetwork();
