@@ -10,8 +10,6 @@
 #include "../ConfigParser/ConfigParser.h"
 #include "../DriverListParser/DriverListParser.h"
 
-using namespace std;
-
 struct value{
     std::string type;
     std::string value;
@@ -37,13 +35,14 @@ public:
 
     void execTrigger(int);
 private:
-    struct value getValueReturn(string, int);
+    struct value getValueReturn(int);
 
     ConfigParser* config_;
     struct drivers driversInstance_;
 
-    string workDir_;
-    string driverPath_;
+    std::string workDir_;
+    std::string historyDir_;
+    std::string driverPath_;
 
     struct value *valuesBuffer_;
 };

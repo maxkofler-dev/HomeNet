@@ -5,3 +5,5 @@ build*
 *pro.user*
 *.pro
 *.out
+*.json
+*.vscode
