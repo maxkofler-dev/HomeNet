@@ -4,3 +4,4 @@ build*
 *.qmake.*
 *pro.user*
 *.pro
+*.out
