@@ -8,6 +8,7 @@
 #include "../ConfigParser/ConfigParser.h"
 #include "../DriverListParser/DriverListParser.h"
 #include "../WSValueserver/WSValueserver.h"
+#include "../WSHistory/WSHistory.h"
 
 
 using namespace std;
@@ -19,6 +20,7 @@ public:
     ~Weathersens();
     void init();
     void refreshValues();
+    void cleanHistories();
     void stop();
 
     void outOverview();
@@ -28,7 +30,8 @@ private:
     ConfigParser *configParser_;
     ExceptionClass *exception_;
     DriverListParser *driverListParser_;
-
+    
+    std::string historyPath_;
     std::string driverListPath_;
 
     struct drivers driverInstances_;
@@ -36,6 +39,7 @@ private:
     bool active_ = false;
 
     WSValueserver *vserver_;
+    WSHistory* history_;
 };
 
 #include "Weathersens.cpp"

@@ -18,9 +18,10 @@ int main(int argc, char** argv)
 {
     ExceptionClass ec;
     ec.setup("errors");
+    Log log(6);
 
     try{
-        Log log(6);
+        
         ConfigParser cp(&ec, &log);
         cp.parseConfig("/hn/config.txt");
         int timeSleep = stoi(cp.getConfig("timesleep", true, false));
@@ -32,11 +33,13 @@ int main(int argc, char** argv)
         {
             ws.refreshValues();
             ws.outOverview();
+            ws.cleanHistories();
             usleep(1000000 * timeSleep);
         }
         netThread.join();
-    }catch(ExceptionClass* e)
-    {
+    }catch(ExceptionClass* e){
         e->printExceptionText();
+    }catch(CriticalConfigNotFoundException e){
+        log.log("main()", "Critical configuration not found!", Log::E);
     }
 }

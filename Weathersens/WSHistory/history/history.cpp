@@ -17,6 +17,7 @@ bool History::loadFile(std::string filename){
         //Save the file path
         this->curFile = filename;
         this->fileLoaded = true;
+        log->log("History::laodFile()", "Loaded file \"" + this->curFile + "\"", Log::D);
 
         return true;
         
@@ -166,7 +167,7 @@ int History::loadHistory(){
             type = "";
             value = "";
 
-            if (timeEndPos <= curLine.length() && typeEndPos <= curLine.length()){
+            if (timeEndPos <= (int)curLine.length() && typeEndPos <= (int)curLine.length()){
                 
                 for(int i = 0; i < timeEndPos; i++){
                     timeString += curLine[i];
@@ -176,7 +177,7 @@ int History::loadHistory(){
                     type += curLine[i];
                 }
 
-                for (int i = typeEndPos+1; i < curLine.length(); i++){
+                for (int i = typeEndPos+1; i < (int)curLine.length(); i++){
                     value += curLine[i];
                 }
 
@@ -184,9 +185,9 @@ int History::loadHistory(){
                     time = stoi(timeString);
                     entryV.push_back(history_entry{time, type, value});
                     this->entryCount++;
-                }catch(std::out_of_range e){
+                }catch(std::out_of_range const& e){
                     log->log("History::loadHistory()", "(out_of_range)Error in getting time from string: " + timeString, Log::E);
-                }catch(std::invalid_argument e){
+                }catch(std::invalid_argument const& e){
                     log->log("History::loadHistory()", "(invalid_argument)Error in getting time from string: " + timeString, Log::E);
                 }
                 

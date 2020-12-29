@@ -43,10 +43,9 @@ functions with "s/f" as return indicate that a boolean tells of success or failu
 
 #include <fstream>
 #include <string>
-#include <sstream>
 #include <vector>
 
-#include "../../log/log.h"
+#include "../../../log/log.h"
 
 class History{
 

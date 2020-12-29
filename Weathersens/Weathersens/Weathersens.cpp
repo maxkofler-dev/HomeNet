@@ -4,6 +4,8 @@ Weathersens::Weathersens(ConfigParser* cp, ExceptionClass* exc, Log* log){
     this->configParser_ = cp;
     this->exception_ = exc;
     this->log = log;
+    this->historyPath_ = cp->getConfig("historydir", true, false);
+    this->history_ = new WSHistory(log);
 }
 
 Weathersens::~Weathersens(){
@@ -44,6 +46,10 @@ void Weathersens::init(){
 
 void Weathersens::refreshValues(){
     vserver_->refresh();
+}
+
+void Weathersens::cleanHistories(){
+    history_->cleanHistories(this->historyPath_ + "/", vserver_->getValueCount(), "");
 }
 
 void Weathersens::stop(){
