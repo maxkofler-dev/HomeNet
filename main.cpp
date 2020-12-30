@@ -29,11 +29,20 @@ int main(int argc, char** argv)
         ws.init();
         HNNetworking hnw(ws.getVSRef(), &cp, &log);
         std::thread netThread(runNet, &hnw, &log);
+        int itsBeforeNextCleanup = 0;
+
         while (true)
         {
             ws.refreshValues();
             ws.outOverview();
-            ws.cleanHistories();
+            if (itsBeforeNextCleanup <= 0){
+                ws.cleanHistories();
+                itsBeforeNextCleanup = 10;
+            }else{
+                itsBeforeNextCleanup--;
+                log.log("main()", "Calls before next history cleanup: " + to_string(itsBeforeNextCleanup), Log::I);
+            }
+            
             usleep(1000000 * timeSleep);
         }
         netThread.join();

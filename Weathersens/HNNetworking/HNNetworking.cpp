@@ -65,7 +65,7 @@ void HNNetworking::runNetwork(){
             {
                 msg += buffer[i];
             }
-            log->log("HNNetworking::runNetwork()", "Message incoming: " + msg, Log::I);
+            //log->log("HNNetworking::runNetwork()", "Message incoming: " + msg, Log::I);
             sendVSPack(sock2, msg);
             //isConnected = false;
             close(sock2);
@@ -107,7 +107,7 @@ void HNNetworking::sendVSPack(int sockClient, std::string msg){
         
 
         send (sockClient, out.c_str(), out.length(), 0);
-        log->log("HNNetworking::sendVSPack()", "Sent: " + out, Log::D);
+        log->log("HNNetworking::sendVSPack()", "Sent " + to_string(out.length()) + " bytes!", Log::I);
     }
 
 }
