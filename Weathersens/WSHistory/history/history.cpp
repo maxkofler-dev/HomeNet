@@ -17,7 +17,6 @@ bool History::loadFile(std::string filename){
         //Save the file path
         this->curFile = filename;
         this->fileLoaded = true;
-        log->log("History::laodFile()", "Loaded file \"" + this->curFile + "\"", Log::D);
 
         return true;
         
@@ -43,7 +42,7 @@ bool History::openFile(){
         if (this->history_file.is_open()){
             return true;
         }else{
-            log->log("History::openFile()", "File could not be opened!", Log::E);
+            log->log("History::openFile()", "File could not be opened - path=" + this->curFile, Log::E);
             return false;
         }
 
@@ -57,11 +56,7 @@ bool History::openFile(){
 }
 
 void History::closeFile(){
-    if (this->history_file.is_open()){
-        history_file.close();
-    }else{
-        log->logprg("History::closeFile()", "The file was not opened - nothig to close!", Log::W);
-    }
+    history_file.close();
 }
 
 void History::clearCache(){
@@ -90,10 +85,12 @@ std::string History::getHistory(){
 }
 
 std::string History::getHistory(time_t lookback){
+    openFile();
     if (!historyLoaded){
         log->logprg("History::getHistory(time_t lookback)", "History was not loaded yet, loading it now, please make shure to load your history before reading it!", Log::W);
         loadHistory();
     }
+    closeFile();
 
     int firstUNIXTime = this->history_entries[0].time;
     int lastUNIXTime = this->history_entries[this->entryCount-1].time;
@@ -126,8 +123,6 @@ std::string History::getHistory(time_t lookback){
         buf += this->history_entries[i].type + ";";
         buf += this->history_entries[i].value + "\n";
     }
-
-
     return buf;
 }
 
@@ -147,8 +142,8 @@ int History::loadHistory(){
     vector<history_entry> entryV;
     this->entryCount = 0;
 
+    openFile();
     if (this->history_file.is_open()){
-        log->log("History::getHistory()", "Reading history...", Log::D);
 
 
         while(!this->history_file.eof()){
@@ -203,13 +198,15 @@ int History::loadHistory(){
         log->logprg("History::getHistory()", "The history file is not opened!", Log::E);
     }
 
-    log->log("History::loadHistory()", "Loaded " + to_string(this->entryCount) + " entries!", Log::D);
+    //log->log("History::loadHistory()", "Loaded " + to_string(this->entryCount) + " entries!", Log::D);
 
     this->history_entries = new history_entry[this->entryCount];
 
     for (int i = 0; i < this->entryCount; i++){
         history_entries[i] = entryV.at(i);
     }
+
+    closeFile();
 
     return this->entryCount;
 }
@@ -229,13 +226,22 @@ int History::cleanHistory(){
             outFile << history_entries[i].value << endl;;
         }
         outFile.close();
-        log->log("History::cleanHistory()", "Rewritten " + to_string(this->entryCount) + " entries!", Log::D);
+        log->log("History::cleanHistory()", "Rewritten " + to_string(this->entryCount) + " entries from file " + this->curFile + "!", Log::D);
         clearCache();
-        openFile();
-        loadHistory();
         return this->entryCount;
     }else{
         log->log("History::cleanHistory()", "Failed opening the history file!", Log::E);
         return -1;
     }
+}
+
+void History::appHistory(struct history_entry entry){
+    closeFile();
+    this->history_file.open(this->curFile, std::ios::app);
+    if (this->history_file.is_open()){
+        history_file << entry.time << ";";
+        history_file << entry.type << ";";
+        history_file << entry.value << std::endl;
+    }
+    closeFile();
 }

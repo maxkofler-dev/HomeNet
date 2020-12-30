@@ -1,3 +1,12 @@
+#ifndef __VALUE__
+#define __VALUE__
+struct value{
+    std::string type;
+    std::string value;
+};
+#endif
+
+
 #ifndef WSVALUESERVER_H
 #define WSVALUESERVER_H
 
@@ -7,6 +16,7 @@
 #include "../ConfigParser/ConfigParser.h"
 #include "../DriverListParser/DriverListParser.h"
 #include "../HNPython/HNPython.h"
+#include "../WSHistory/WSHistory.h"
 
 using namespace std;
 
@@ -26,7 +36,7 @@ struct valueInstance{
 class WSValueserver
 {
 public:
-    WSValueserver(ConfigParser*, drivers, Log*);
+    WSValueserver(ConfigParser*, drivers, WSHistory*, Log*);
     ~WSValueserver();
 
     void init();
@@ -42,6 +52,7 @@ public:
 
 private:
     Log* log;
+    WSHistory* history_;
     bool active_= false;
     ConfigParser* config_;
     drivers driversInstance_;

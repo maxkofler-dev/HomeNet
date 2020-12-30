@@ -1,10 +1,11 @@
 #include "WSValueserver.h"
 
-WSValueserver::WSValueserver(ConfigParser* config, drivers dInstance, Log* log)
+WSValueserver::WSValueserver(ConfigParser* config, drivers dInstance, WSHistory* history, Log* log)
 {
     this->config_ = config;
     this->driversInstance_ = dInstance;
     this->log = log;
+    this->history_ = history;
     py = new HNPython(config, dInstance, this->log);
 }
 

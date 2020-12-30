@@ -14,6 +14,7 @@
 
 #include "../../log/log.h"
 #include "../WSValueserver/WSValueserver.h"
+#include "../WSHistory/WSHistory.h"
 #include "../ConfigParser/ConfigParser.h"
 
 class HNNetworking
@@ -26,6 +27,7 @@ public:
 
 private:
     Log* log;
+    WSHistory* history_;
     WSValueserver* vSRef_;
     ConfigParser* cp_;
 

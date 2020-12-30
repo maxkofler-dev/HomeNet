@@ -20,7 +20,6 @@ void HNPython::finishPython(){
     Py_Finalize();
 }
 
-
 void HNPython::importDrivers(){
     int driverCount = driversInstance_.driverCount;
     valuesBuffer_ = new struct value[driversInstance_.tValuesCount];
@@ -103,13 +102,6 @@ struct value HNPython::getValueReturn(int ID){
     for (int i = pos[2] + 1; i < pos[3]; i++){
         value += buffer[i];
     }
-
-    time_t now = time(0);
-
-    fstream history;
-    history.open(this->historyDir_ + "/valueHistory/" + to_string(ID), ios::app);
-    history << now << ";" << value << endl;
-    history.close();
 
     vReturn.type = type;
     vReturn.value = value;

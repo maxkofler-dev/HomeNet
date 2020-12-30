@@ -50,6 +50,12 @@ functions with "s/f" as return indicate that a boolean tells of success or failu
 class History{
 
 public:
+    struct history_entry{
+        int time;
+        std::string type;
+        std::string value;
+    };
+
     History(Log* log);
     ~History();
 
@@ -66,16 +72,12 @@ public:
     int loadHistory();
     int cleanHistory();
 
-    struct history_entry{
-        int time;
-        std::string type;
-        std::string value;
-    };
+    void appHistory(struct history_entry);
 
 private:
     Log* log;
 
-    std::ifstream history_file;
+    std::fstream history_file;
     std::string curFile;
 
     bool fileLoaded;

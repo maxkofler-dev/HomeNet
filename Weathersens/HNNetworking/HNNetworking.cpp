@@ -5,6 +5,7 @@ HNNetworking::HNNetworking(WSValueserver* ref, ConfigParser* cp, Log* log)
     this->vSRef_ = ref;
     this->cp_ = cp;
     this->log = log;
+    this->history_ = new WSHistory(this->log);
 }
 
 void HNNetworking::runNetwork(){
@@ -88,7 +89,9 @@ void HNNetworking::sendVSPack(int sockClient, std::string msg){
         }
         int id = stoi(buf);
         log->log("HNNetworking::runNetwork()", "Called history of value " + to_string(id), Log::I);
-        string wp = cp_->getConfig("workdir", true, false);
+        string hp = cp_->getConfig("historydir", true, false);
+
+        /*
         ifstream histFile;
         histFile.open(wp + "/valueHistory/" + to_string(id), ios::in);
         string out;
@@ -96,10 +99,15 @@ void HNNetworking::sendVSPack(int sockClient, std::string msg){
             getline(histFile, buf);
             out += buf + "\n";
         }
-
         histFile.close();
+        */
+
+        std::string out;
+        out = this->history_->getHistory(hp + "/" + to_string(id));
+        
 
         send (sockClient, out.c_str(), out.length(), 0);
+        log->log("HNNetworking::sendVSPack()", "Sent: " + out, Log::D);
     }
 
 }

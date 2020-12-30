@@ -38,7 +38,7 @@ void Weathersens::init(){
         driverListParser_->coutDriver(driverInstances_.driverInstances[i]);
     }
 
-    vserver_ = new WSValueserver(configParser_, driverInstances_, log);
+    vserver_ = new WSValueserver(configParser_, driverInstances_, history_, log);
 
     vserver_->init();
     active_ = true;

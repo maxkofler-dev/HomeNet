@@ -4,16 +4,11 @@
 #include <Python.h>
 #include <string>
 #include <fstream>
-#include <ctime>
 
 #include "../../log/log.h"
+#include "../WSValueserver/WSValueserver.h"
 #include "../ConfigParser/ConfigParser.h"
 #include "../DriverListParser/DriverListParser.h"
-
-struct value{
-    std::string type;
-    std::string value;
-};
 
 class HNPython
 {
