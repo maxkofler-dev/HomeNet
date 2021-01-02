@@ -102,6 +102,9 @@ void HNNetworking::sendVSPack(int sockClient, std::string msg){
 
         out = this->history_->getHistory(hp + "/" + to_string(id), secLookback);
 
+        send (sockClient, out.c_str(), out.length(), 0);
+        log->log("HNNetworking::sendVSPack()", "Sent " + to_string(out.length()) + " bytes!", Log::I);
+
     }else if (msg.find("@vh") <= msg.length()){
         std::string buf;
         for (int i = msg.find("@vh") + 3; i < (int)msg.length(); i++){
