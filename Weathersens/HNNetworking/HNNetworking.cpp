@@ -82,25 +82,34 @@ void HNNetworking::sendVSPack(int sockClient, std::string msg){
             buf += this->packValue(i) + "\n";
         }
         send(sockClient, buf.c_str(), buf.length(), 0);
+    }else if(msg.find("@vht") <= msg.length()){
+        log->log("HNNetworking::runNetwork()", "Called history with specific lookback window!", Log::I);
+        std::string buf;
+        for (int i = msg.find("@vht") + 4; i < (int)msg.find(";"); i++){
+            buf += msg[i];
+        }
+        int id = stoi(buf);
+        buf = "";
+        for (int i = msg.find(";") + 1; i < (int)msg.length(); i++){
+            buf += msg[i];
+        }
+        int secLookback = stoi(buf);
+
+        log->log("HNNetworking::runNetwork()", "ID=" + to_string(id) + " SEC=" + to_string(secLookback), Log::D);
+
+        std::string out;
+        std::string hp = cp_->getConfig("historydir", true, false);
+
+        out = this->history_->getHistory(hp + "/" + to_string(id), secLookback);
+
     }else if (msg.find("@vh") <= msg.length()){
-        string buf;
+        std::string buf;
         for (int i = msg.find("@vh") + 3; i < (int)msg.length(); i++){
             buf += msg[i];
         }
         int id = stoi(buf);
         log->log("HNNetworking::runNetwork()", "Called history of value " + to_string(id), Log::I);
-        string hp = cp_->getConfig("historydir", true, false);
-
-        /*
-        ifstream histFile;
-        histFile.open(wp + "/valueHistory/" + to_string(id), ios::in);
-        string out;
-        while(histFile.good() && !histFile.eof()){
-            getline(histFile, buf);
-            out += buf + "\n";
-        }
-        histFile.close();
-        */
+        std::string hp = cp_->getConfig("historydir", true, false);
 
         std::string out;
         out = this->history_->getHistory(hp + "/" + to_string(id));
@@ -109,7 +118,6 @@ void HNNetworking::sendVSPack(int sockClient, std::string msg){
         send (sockClient, out.c_str(), out.length(), 0);
         log->log("HNNetworking::sendVSPack()", "Sent " + to_string(out.length()) + " bytes!", Log::I);
     }
-
 }
 
 std::string HNNetworking::packValue(int id){

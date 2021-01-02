@@ -32,3 +32,10 @@ std::string WSHistory::getHistory(std::string path){
     this->history->loadHistory();
     return this->history->getHistory();
 }
+
+std::string WSHistory::getHistory(std::string path, int lookback){
+    using namespace std;
+    this->history->loadFile(path);
+    this->history->loadHistory();
+    return this->history->getHistory(lookback);
+}

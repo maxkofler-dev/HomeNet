@@ -37,7 +37,7 @@ int main(int argc, char** argv)
             ws.outOverview();
             if (itsBeforeNextCleanup <= 0){
                 ws.cleanHistories();
-                itsBeforeNextCleanup = 10;
+                itsBeforeNextCleanup = 1000;
             }else{
                 itsBeforeNextCleanup--;
                 log.log("main()", "Calls before next history cleanup: " + to_string(itsBeforeNextCleanup), Log::I);

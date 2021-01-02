@@ -16,6 +16,7 @@ public:
     void appHistory(struct value);
 
     std::string getHistory(std::string);
+    std::string getHistory(std::string, int);
 
 private:
     Log* log;
