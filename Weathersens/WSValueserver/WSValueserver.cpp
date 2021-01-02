@@ -40,9 +40,12 @@ void WSValueserver::refresh(){
     py->callValues();
     py->pauseDrivers();
 
+    std::string hp = config_->getConfig("historydir", true, false);
+
     for (int i = 0; i < driversInstance_.tValuesCount; i++)
     {
         values_[i] = py->getValue(i);
+        history_->appHistory(hp + "/" + to_string(i), values_[i]);
     }
 }
 

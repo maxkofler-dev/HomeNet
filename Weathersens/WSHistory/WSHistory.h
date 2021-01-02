@@ -13,7 +13,7 @@ public:
     WSHistory(Log*);
 
     void cleanHistories(std::string, int, std::string);
-    void appHistory(struct value);
+    void appHistory(std::string, struct value);
 
     std::string getHistory(std::string);
     std::string getHistory(std::string, int);

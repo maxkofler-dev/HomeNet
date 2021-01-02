@@ -16,13 +16,14 @@ void WSHistory::cleanHistories(std::string prefix, int cHistories, std::string p
     }
 }
 
-void WSHistory::appHistory(struct value v){
+void WSHistory::appHistory(std::string path, struct value v){
     struct History::history_entry history_entry;
     history_entry.type = v.type;
     history_entry.value = v.value;
     time_t now = time(0);
     history_entry.time = now;
 
+    this->history->loadFile(path);
     this->history->appHistory(history_entry);
 }
 

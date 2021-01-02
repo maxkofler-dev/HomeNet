@@ -237,11 +237,23 @@ int History::cleanHistory(){
 
 void History::appHistory(struct history_entry entry){
     closeFile();
+    log->log("History::appHistory()", "Appending history of value " + this->curFile, Log::D);
     this->history_file.open(this->curFile, std::ios::app);
     if (this->history_file.is_open()){
         history_file << entry.time << ";";
         history_file << entry.type << ";";
         history_file << entry.value << std::endl;
+    }else{
+        log->log("History::appHitsory()", "Not found any openable History files! Creating new ones!", Log::I);
+        this->history_file.open(this->curFile, std::ios::out);
+
+        if (this->history_file.is_open()){
+            history_file << entry.time << ";";
+            history_file << entry.type << ";";
+            history_file << entry.value << std::endl;
+        }else{
+            log->log("History::appHistory()", "History files could not be created!", Log::E);
+        }
     }
     closeFile();
 }
